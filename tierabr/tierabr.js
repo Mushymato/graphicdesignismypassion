@@ -28,8 +28,10 @@ function buildIcon(key) {
         const iconList = ICON_INDEX[GENERIC_ICONS[key]];
         const random = Math.floor(Math.random() * iconList.length);
         icon.setAttribute("src", `${ICON_FOLDER}/${iconList[random]}`);
+        icon.setAttribute("id", `generic-${key}`);
     } else {
         icon.setAttribute("src", `${ICON_FOLDER}/${UNIQUE_ICONS[key]}`);
+        icon.setAttribute("id", `unique-${key}`);
         icon.setAttribute("class", "unique")
     }
     return icon;
@@ -43,12 +45,25 @@ function buildTier() {
             tierTd.appendChild(buildIcon(key));
         }
     }
+}
+
+function refreshTier() {
+    for (const key of Object.keys(GENERIC_ICONS)) {
+        const iconList = ICON_INDEX[GENERIC_ICONS[key]];
+        const random = Math.floor(Math.random() * iconList.length);
+        const icon = document.getElementById(`generic-${key}`);
+        icon.setAttribute("src", `${ICON_FOLDER}/${iconList[random]}`);
+    }
     window.setTimeout(
-        buildTier,
+        refreshTier,
         1000
     )
 }
 
 window.onload = function () {
     buildTier();
+    window.setTimeout(
+        refreshTier,
+        1000
+    );
 }
